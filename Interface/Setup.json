@@ -1,0 +1,9 @@
+﻿{
+  "Title": "Atmosphir Launcher",
+  "RemoteEndpoint": "http://localhost:9900/",
+  "LauncherProject": "atmo_launcher",
+  "GameProject": "atmo_game",
+  "GameFolder": "game",
+  "GameExecutable": null,
+  "SupportSite": "http://onemoreblock.com/"
+}
