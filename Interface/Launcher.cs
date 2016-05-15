@@ -52,7 +52,14 @@ namespace Interface {
             try {
                 var cache = ChangeCache.FromFile(Path.Combine(targetPath, "version.json"));
                 var version = await updater.FindLatestVersion();
+                Console.WriteLine("Local version: v{0}, Latest version: v{1}", cache.Version.ToString(), version.ToString());
                 if (cache.Version >= version) {
+                    Console.WriteLine("No updates available.");
+                    Application.Invoke((sender, args) => {
+                        PlayButton.Sensitive = true;
+                        PlayButton.Label = "Play";
+                        ProgressBar.Text = "Finished Updating";
+                    });
                     return;
                 }
 
