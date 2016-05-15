@@ -68,8 +68,6 @@ namespace Server.Requests {
                                 writer.Write(buffer, 0, length);
                             }
                         }
-
-                        break;
                     }
                 }
             }

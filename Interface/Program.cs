@@ -36,7 +36,6 @@ namespace Interface {
             using (var file = File.OpenRead("launcher.bin"))
             using (var stream = new GZipStream(file, CompressionMode.Decompress))
             using (var reader = new StreamReader(stream)) {
-                Console.WriteLine("Started stream");
                 var setup = JsonConvert.DeserializeObject<LauncherSetup>(reader.ReadLine(), new JsonSerializerSettings {
                     DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
                 });
@@ -74,6 +73,8 @@ namespace Interface {
                 setup.GameFolder,
                 setup.GameExecutable
             );
+            Process.Start(gamePath, "standalone");
+            Process.GetCurrentProcess().Kill();
         }
     }
 }
