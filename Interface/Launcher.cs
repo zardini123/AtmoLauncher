@@ -48,54 +48,71 @@ namespace Interface {
             PlayButton.Sensitive = false;
             PlayButton.Label = "Updating";
             ProgressBar.Text = "Checking for updates";
-            
-            try {
+
+            try
+            {
                 var cache = ChangeCache.FromFile(Path.Combine(targetPath, "version.json"));
                 var version = await updater.FindLatestVersion();
                 Console.WriteLine("Local version: v{0}, Latest version: v{1}", cache.Version.ToString(), version.ToString());
-                if (cache.Version >= version) {
+                if (cache.Version >= version)
+                {
                     Console.WriteLine("No updates available.");
                     Application.Invoke((sender, args) => {
                         PlayButton.Sensitive = true;
                         PlayButton.Label = "Play";
-                        ProgressBar.Text = "Finished Updating";
+                        ProgressBar.Text = "No updates available";
                     });
                     return;
                 }
 
-                Application.Invoke((sender, args) => ProgressBar.Text = "Latest version is " + version);
+                Application.Invoke((sender, args) => {
+                    ProgressBar.Text = "Getting version " + version + " from server...";
+                    PlayButton.Sensitive = false;
+                    PlayButton.Label = "Updating";
+                });
 
                 var changes = await updater.GetChanges(cache.Version, version);
                 var totalSize = ByteSize.FromBytes(changes.NewSizes.Sum(kvp => kvp.Value));
                 long currentDownloaded = 0;
-                foreach (var change in changes.NewSizes) {
+                foreach (var change in changes.NewSizes)
+                {
                     var relativePath = change.Key;
                     long fileSize = 0;
-                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) => {
+                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) =>
+                    {
                         fileSize = size;
                         var currentTotalBytes = ByteSize.FromBytes(current + currentDownloaded);
 
-                        Application.Invoke((_, args) => {
+                        Application.Invoke((_, args) =>
+                        {
                             UpdateDownloadProgress(relativePath, currentTotalBytes, totalSize);
                         });
                     });
                     currentDownloaded += fileSize;
                 }
                 cache.SetVersion(version);
-            } catch (Exception e) {
+
                 Application.Invoke((sender, args) => {
+                    PlayButton.Sensitive = true;
+                    PlayButton.Label = "Play";
+                    ProgressBar.Text = "Finished Updating";
+                });
+            }
+            catch (Exception e)
+            {
+                Application.Invoke((sender, args) =>
+                {
                     Console.WriteLine(e);
                     var dialog = new MessageDialog(Window, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok,
-                                                    false, "An error ocurred, please report this at {0}:\n{1}", _setup.SupportSite, e) {Title = "Update error"};
+                                                    false, "An error ocurred, please report this at {0}:\n{1}", _setup.SupportSite, e)
+                    { Title = "Update error" };
                     dialog.Run();
                     dialog.Destroy();
                 });
             }
-            Application.Invoke((sender, args) => {
-                PlayButton.Sensitive = true;
-                PlayButton.Label = "Play";
-                ProgressBar.Text = "Finished Updating";
-            });
+            finally {
+                
+            }         
         }
 
         private void UpdateDownloadProgress(string fileName, ByteSize current, ByteSize total) {

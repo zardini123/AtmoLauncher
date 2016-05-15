@@ -19,6 +19,7 @@ namespace Server {
         private Project() {}
 
         public IEnumerable<Version> GetVersions() {
+            Console.WriteLine("GetVersions Requested.");
             return Directory.GetDirectories(VersionRoot.AbsoluteUnescaped())
                 .Select(d => {
                     Version v;
@@ -28,25 +29,29 @@ namespace Server {
                 .Where(v => v != null);
         } 
         public IEnumerable<FileInfo> GetLatestFiles(IEnumerable<Version> versions) {
+            Console.WriteLine("GetLatestFiles Requested");
             var changes = versions.OrderByDescending(v => v)
                                   .Select(v => new Uri(VersionRoot, v.ToString()))
-                                  .Select(p => Tuple.Create(p, Directory.GetFiles(p.AbsoluteUnescaped())
+                                  .Select(p => Tuple.Create(p, Directory.GetFiles(p.AbsoluteUnescaped(), "*", SearchOption.AllDirectories)
                                                                         .Select(fp => new Uri(fp))))
                                   .Where(f => f.Item2 != null);
 
             var result = new List<string>();
             foreach (var version in changes) {
+                Console.WriteLine("Going through version " + version.Item1);
                 foreach (var file in version.Item2) {
+                    Console.WriteLine("File " + file.AbsolutePath);
                     if (!result.Any(f => f.EndsWith(GetRelativeString(file)))) {
                         result.Add(file.AbsoluteUnescaped());
                     }
                 }
             }
+
             return result.Select(f => new FileInfo(f));
         }
 
         public string GetRelativeString(Uri fullPath) {
-            return string.Join(null, VersionRoot.MakeRelativeUri(fullPath).ToString().Split('/').Skip(1));
+            return string.Join("/", VersionRoot.MakeRelativeUri(fullPath).ToString().Split('/').Skip(1));
         }
 
         public static Project FromName(string projectName) {

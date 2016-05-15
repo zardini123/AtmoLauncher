@@ -4,6 +4,6 @@
   "LauncherProject": "atmo_launcher",
   "GameProject": "atmo_game",
   "GameFolder": "game",
-  "GameExecutable": null,
+  "GameExecutable": "Atmosphir.exe",
   "SupportSite": "http://onemoreblock.com/"
 }
