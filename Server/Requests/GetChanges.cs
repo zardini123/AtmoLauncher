@@ -11,10 +11,6 @@ namespace Server.Requests {
             var versions = project.GetVersions()
                                   .Where(v => v > delta.Current && v <= delta.Target);
 
-            foreach (var f in project.GetLatestFiles(versions)) {
-                var urif = new Uri(f.FullName);
-                var relst = project.GetRelativeString(new Uri(f.FullName));
-            }
             return new ChangeSummary(
                 project.GetLatestFiles(versions).ToDictionary(
                     fi => project.GetRelativeString(new Uri(fi.FullName)),

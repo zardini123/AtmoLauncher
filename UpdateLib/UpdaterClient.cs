@@ -10,6 +10,8 @@ namespace UpdateLib {
     public class UpdaterClient {
         public delegate void Progress(long downloaded, long fileSize);
 
+        private const int BufferSize = 1024;
+
         private readonly Uri _endpoint;
         private readonly string _project;
 
@@ -36,18 +38,15 @@ namespace UpdateLib {
             if (directory != null && !Directory.Exists(directory)) {
                 Directory.CreateDirectory(directory);
             }
-            using (var file = File.OpenWrite(localPath))
-            using (var writer = new StreamWriter(file)) {
-                var progress = RawPost("get_file", new FileData {
+            using (var file = File.OpenWrite(localPath)) {
+                await RawPost("get_file", new FileData {
                     RemotePath = remotePath,
                     Version = version
-                }, onProgress);
-                var response = await progress;
-                await writer.WriteAsync(response);
+                }, file, onProgress);
             }
         }
 
-        private async Task<string> RawPost<TRequest>(string requestName, TRequest content, Progress onProgress = null) {
+        private async Task RawPost<TRequest>(string requestName, TRequest content, Stream output, Progress onProgress = null) {
             var message = new UpdaterMessage<TRequest> {
                 Request = requestName,
                 Project = _project,
@@ -61,25 +60,29 @@ namespace UpdateLib {
                 if (!res.Content.Headers.ContentLength.HasValue) {
                     throw new HttpRequestException("Content-Length is not set!");
                 }
-                var buffer = new byte[res.Content.Headers.ContentLength.Value];
-                var length = 0;
-
-                using (var resStream = await res.Content.ReadAsStreamAsync()) {
-                    int bytesRead;
-                    var readSize = buffer.Length;
-                    while (length < buffer.Length && (bytesRead = await resStream.ReadAsync(buffer, length, readSize)) > 0) {
-                        readSize = buffer.Length - length;
-                        length += bytesRead;
-                        onProgress?.Invoke(length, buffer.Length);
+                
+                using (var resStream = await res.Content.ReadAsStreamAsync())
+                using (var buffered = new BufferedStream(resStream)) {
+                    var buffer = new byte[BufferSize];
+                    int length;
+                    long bytesRead = 0;
+                    while ((length = await buffered.ReadAsync(buffer, 0, BufferSize)) > 0) {
+                        bytesRead += length;
+                        await output.WriteAsync(buffer, 0, length);
+                        onProgress?.Invoke(bytesRead, buffer.Length);
                     }
                 }
-                return Encoding.UTF8.GetString(buffer, 0, length);
             }
         }
 
         private async Task<UpdaterMessage<TResponse>> Post<TRequest, TResponse>(string requestName, TRequest content) {
-            var post = await RawPost(requestName, content);
-            return JsonConvert.DeserializeObject<UpdaterMessage<TResponse>>(post);
+            using (var stream = new MemoryStream())
+            using (var reader = new StreamReader(stream)) {
+                await RawPost(requestName, content, stream);
+                stream.Flush();
+                stream.Position = 0;
+                return JsonConvert.DeserializeObject<UpdaterMessage<TResponse>>(reader.ReadToEnd());
+            }
         }
 
         private async Task<UpdaterMessage<TResponse>> Post<TResponse>(string requestName) {

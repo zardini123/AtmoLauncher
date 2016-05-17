@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Version = UpdateLib.Version;
 
 namespace Server {
     internal static class UriExtensions {
@@ -19,14 +20,12 @@ namespace Server {
         private Project() {}
 
         public IEnumerable<Version> GetVersions() {
-            Console.WriteLine("GetVersions Requested.");
             return Directory.GetDirectories(VersionRoot.AbsoluteUnescaped())
                 .Select(d => {
                     Version v;
                     Version.TryParse(Path.GetFileName(d), out v);
                     return v;
-                })
-                .Where(v => v != null);
+                });
         } 
         public IEnumerable<FileInfo> GetLatestFiles(IEnumerable<Version> versions) {
             Console.WriteLine("GetLatestFiles Requested");
