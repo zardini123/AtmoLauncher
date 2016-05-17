@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdateProgress.cs" />
     <Compile Include="Version.cs" />
     <Compile Include="ChangeCache.cs" />
     <Compile Include="ChangeSummary.cs" />

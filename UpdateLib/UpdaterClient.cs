@@ -34,6 +34,7 @@ namespace UpdateLib {
         }
 
         public async Task Download(string remotePath, string localPath, Version version, Progress onProgress = null) {
+            localPath = localPath.Replace("%20", " ");
             var directory = Path.GetDirectoryName(localPath);
             if (directory != null && !Directory.Exists(directory)) {
                 Directory.CreateDirectory(directory);

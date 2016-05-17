@@ -12,7 +12,7 @@ namespace Server.Requests {
 
         public override object Handle(Project project, object body, HttpListenerResponse response) {
             var data = (FileData) body;
-            var remotePath = data.RemotePath.Replace("..", "");
+            var remotePath = data.RemotePath.Replace("..", "").Replace("%20", " ");
             var path = Path.Combine(
                 project.VersionRoot.AbsoluteUnescaped(),
                 data.Version.ToString(),

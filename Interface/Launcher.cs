@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using Gtk;
 using UpdateLib;
+using Newtonsoft.Json;
 
 namespace Interface {
     internal class Launcher {
@@ -70,22 +72,48 @@ namespace Interface {
                 });
 
                 var changes = await updater.GetChanges(cache.Version, version);
-                var totalSize = ByteSize.FromBytes(changes.NewSizes.Sum(kvp => kvp.Value));
+
+                string progressFile = Path.Combine(targetPath, "updateProgress.json");
+
+                if (!Directory.Exists(targetPath))
+                    Directory.CreateDirectory(targetPath);
+
+                string curProgress = "";
+
+                if (File.Exists(progressFile))
+                    curProgress = File.ReadAllText(progressFile);
+
+                if (curProgress == "")
+                    curProgress = "{}";
+
+                UpdateProgress progress = JsonConvert.DeserializeObject<UpdateProgress>(curProgress);
+
+                if (progress == null)
+                    progress = new UpdateProgress();
+
+                List<KeyValuePair<string, int>> changesLeft = changes.NewSizes.Where(c => !progress.DownloadedFiles.Contains(c.Key)).ToList();
+
+                var totalSize = ByteSize.FromBytes(changesLeft.Sum(kvp => kvp.Value));
                 long currentDownloaded = 0;
-                foreach (var change in changes.NewSizes) {
+                foreach (var change in changesLeft) {
                     var relativePath = change.Key;
                     long fileSize = 0;
                     await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) => {
                         fileSize = size;
                         var currentTotalBytes = ByteSize.FromBytes(current + currentDownloaded);
-
                         Application.Invoke((_, args) => {
                             UpdateDownloadProgress(relativePath, currentTotalBytes, totalSize);
                         });
                     });
                     currentDownloaded += fileSize;
+
+                    progress.DownloadedFiles.Add(change.Key);
+                    File.WriteAllText(progressFile, JsonConvert.SerializeObject(progress));
                 }
                 cache.SetVersion(version);
+
+                if(File.Exists(progressFile))
+                    File.Delete(progressFile);
 
                 Application.Invoke((sender, args) => {
                     PlayButton.Sensitive = true;
