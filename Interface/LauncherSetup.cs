@@ -7,5 +7,6 @@
         public string GameProject { get; set; }
         public string GameFolder { get; set; }
         public string GameExecutable { get; set; }
+        public string ExecuteArgs { get; set; }
     }
 }

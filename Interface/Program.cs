@@ -73,7 +73,7 @@ namespace Interface {
                 setup.GameFolder,
                 setup.GameExecutable
             );
-            Process.Start(gamePath, "standalone");
+            Process.Start(gamePath, setup.ExecuteArgs);
             Process.GetCurrentProcess().Kill();
         }
     }
