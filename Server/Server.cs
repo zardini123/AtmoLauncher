@@ -19,13 +19,11 @@ namespace Server {
         public static ServerConfiguration Configuration {
             get {
                 if (_config == null) {
-                    _config = JsonConvert.DeserializeObject<ServerConfiguration>(File.ReadAllText("config.json"));
+                    _config = JsonConvert.DeserializeObject<ServerConfiguration>(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.json")));
                 }
                 return _config;
             }
         }
-
-        
 
         public Server() {
             _requestHandlers = new Dictionary<string, Tuple<Type, Request>>();

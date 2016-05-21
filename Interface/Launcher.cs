@@ -45,19 +45,27 @@ namespace Interface {
         }
 
         private async Task UpdateProject(UpdaterClient updater, string projectRoot) {
-            var targetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), projectRoot);
+            var targetPath = "";
+
+            if (Program.IsUnix)
+                targetPath = Path.Combine(Directory.GetParent(Assembly.GetEntryAssembly().Location).Parent.Parent.ToString(), projectRoot);  
+            else
+                targetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), projectRoot);
 
             PlayButton.Sensitive = false;
             PlayButton.Label = "Updating";
             ProgressBar.Text = "Checking for updates";
 
-            try {
+            try
+            {
                 var cache = ChangeCache.FromFile(Path.Combine(targetPath, "version.json"));
                 var version = await updater.FindLatestVersion();
                 Console.WriteLine("Local version: {0}, Latest version: {1}", cache.Version, version);
-                if (cache.Version >= version) {
+                if (cache.Version >= version)
+                {
                     Console.WriteLine("No updates available.");
-                    Application.Invoke((sender, args) => {
+                    Application.Invoke((sender, args) =>
+                    {
                         PlayButton.Sensitive = true;
                         PlayButton.Label = "Play";
                         ProgressBar.Text = "No updates available";
@@ -65,7 +73,8 @@ namespace Interface {
                     return;
                 }
 
-                Application.Invoke((sender, args) => {
+                Application.Invoke((sender, args) =>
+                {
                     ProgressBar.Text = "Getting version " + version + " from server...";
                     PlayButton.Sensitive = false;
                     PlayButton.Label = "Updating";
@@ -95,13 +104,16 @@ namespace Interface {
 
                 var totalSize = ByteSize.FromBytes(changesLeft.Sum(kvp => kvp.Value));
                 long currentDownloaded = 0;
-                foreach (var change in changesLeft) {
+                foreach (var change in changesLeft)
+                {
                     var relativePath = change.Key;
                     long fileSize = 0;
-                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) => {
+                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) =>
+                    {
                         fileSize = size;
                         var currentTotalBytes = ByteSize.FromBytes(current + currentDownloaded);
-                        Application.Invoke((_, args) => {
+                        Application.Invoke((_, args) =>
+                        {
                             UpdateDownloadProgress(relativePath, currentTotalBytes, totalSize);
                         });
                     });
@@ -112,24 +124,39 @@ namespace Interface {
                 }
                 cache.SetVersion(version);
 
-                if(File.Exists(progressFile))
+                if (File.Exists(progressFile))
                     File.Delete(progressFile);
 
-                Application.Invoke((sender, args) => {
+                Application.Invoke((sender, args) =>
+                {
                     PlayButton.Sensitive = true;
                     PlayButton.Label = "Play";
                     ProgressBar.Text = "Finished Updating";
                 });
-            } catch (Exception e) {
-                Application.Invoke((sender, args) => {
-                    Console.WriteLine(e);
-                    var dialog = new MessageDialog(Window, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok,
-                                                    false, "An error ocurred, please report this at {0}:\n{1}", _setup.SupportSite, e) {
-                        Title = "Update error"
-                    };
-                    dialog.Run();
-                    dialog.Destroy();
-                });
+            }
+            catch (Exception e)
+            {
+                if (e is System.Net.WebException || e is System.Net.Http.HttpRequestException || e is System.Net.Sockets.SocketException)
+                {
+                    Application.Invoke((sender, args) =>
+                    {
+                        PlayButton.Sensitive = true;
+                        PlayButton.Label = "Play";
+                        ProgressBar.Text = "Couldn't connect to update server.";
+                    });
+                }
+                else {
+                    Application.Invoke((sender, args) => {
+                        Console.WriteLine(e);
+                        var dialog = new MessageDialog(Window, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok,
+                                                        false, e.GetType() + "An error ocurred, please report this at {0}:\n{1}", _setup.SupportSite, e)
+                        {
+                            Title = "Update error"
+                        };
+                        dialog.Run();
+                        dialog.Destroy();
+                    });
+                }
             }
         }
 
