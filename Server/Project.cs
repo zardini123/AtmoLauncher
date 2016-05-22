@@ -8,7 +8,14 @@ using Version = UpdateLib.Version;
 namespace Server {
     internal static class UriExtensions {
         public static string AbsoluteUnescaped(this Uri uri) {
-            return uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
+            string toReturn = uri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
+
+            if (!toReturn.StartsWith("C:"))
+                toReturn = "/" + toReturn;
+
+            toReturn.Replace(" ", @"\ ");
+
+            return toReturn;
         }
     }
 
@@ -16,7 +23,7 @@ namespace Server {
         public string Name { get; private set; }
 
         public Uri VersionRoot => new Uri(Path.GetFullPath(Path.Combine(Server.Configuration.ProjectsRoot, Name) + Path.DirectorySeparatorChar), UriKind.Absolute);
-
+       
         private Project() {}
 
         public IEnumerable<Version> GetVersions() {
@@ -54,7 +61,7 @@ namespace Server {
         }
 
         public static Project FromName(string projectName) {
-            var path = Path.Combine(Server.Configuration.ProjectsRoot, projectName, "project.json");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Server.Configuration.ProjectsRoot, projectName, "project.json");
             var project = JsonConvert.DeserializeObject<Project>(File.ReadAllText(path));
             project.Name = projectName;
             return project;

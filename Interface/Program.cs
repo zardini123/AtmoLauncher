@@ -11,6 +11,13 @@ namespace Interface {
     class Program {
         public static string ExecutableName => Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location);
 
+        public static bool IsUnix {
+            get {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+
         public static void Main(string[] args) {
             var immediateStart = false;
             var update = false;
@@ -33,7 +40,8 @@ namespace Interface {
             //    (such as update server, window title, etc)
             //  - The remainder of the file is the contents of a Gtk.Builder XML file,
             //    which holds the layout definition.
-            using (var file = File.OpenRead("launcher.bin"))
+            
+            using (var file = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
             using (var stream = new GZipStream(file, CompressionMode.Decompress))
             using (var reader = new StreamReader(stream)) {
                 var setup = JsonConvert.DeserializeObject<LauncherSetup>(reader.ReadLine(), new JsonSerializerSettings {
@@ -73,7 +81,22 @@ namespace Interface {
                 setup.GameFolder,
                 setup.GameExecutable
             );
-            Process.Start(gamePath, setup.ExecuteArgs);
+
+            if (IsUnix) {
+                gamePath = Path.Combine(
+                Directory.GetParent(Assembly.GetEntryAssembly().Location).Parent.Parent.ToString(),
+                setup.GameFolder,
+                setup.GameExecutable
+                );
+
+                Process.Start(new ProcessStartInfo(
+                    "open",
+                    "-a '" + gamePath + "' -n --args " + setup.ExecuteArgs)
+                { UseShellExecute = false });
+            }
+            else 
+                Process.Start(gamePath, setup.ExecuteArgs);
+                
             Process.GetCurrentProcess().Kill();
         }
     }
