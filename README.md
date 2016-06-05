@@ -1,10 +1,10 @@
 AtmoLauncher
 ==========
-This is a custom-built launcher intended for updating Atmosphir, however, it can be used with any other application. The server can be hosted on a Windows machine or Mac using Mono if you decide to go with the application version, but a PHP version of the server is also available for use on a webserver. 
+This is a custom-built launcher intended for updating Atmosphir, however, it can be used with any other application. The server can be hosted on a Windows machine or Mac using Mono if you decide to go with the .NET version, but a PHP version of the server is also available for use on a webserver. 
 
 Troposphir
 ==========
-Troposphir is an open source, non-profit project aimed at providing a playable experience for the game Atmosphir. This is the code we use on the official Atmosphir revival server over at http://onemoreblock.com/. 
+Troposphir is an open source, non-profit project aimed at providing a playable experience for the game Atmosphir.
 
 Development Team: 
 ==========
