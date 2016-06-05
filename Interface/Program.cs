@@ -40,6 +40,14 @@ namespace Interface {
             //    (such as update server, window title, etc)
             //  - The remainder of the file is the contents of a Gtk.Builder XML file,
             //    which holds the layout definition.
+            // IMPORTANT: When updating it, name the new file 'launcher.bin.new'
+
+            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"))) {
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin"));
+                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin"));
+                File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"));
+            }
             
             using (var file = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
             using (var stream = new GZipStream(file, CompressionMode.Decompress))
@@ -73,6 +81,15 @@ namespace Interface {
             }
             File.Copy(selfPath, newPath);
             Process.Start(newPath, "--update");
+        }
+
+        public static void RebootOrig() {
+            var selfPath = Assembly.GetEntryAssembly().Location;
+            if (selfPath.Contains("old")) {
+                var origPath = selfPath.Replace("old.exe", "exe");
+                Process.Start(origPath);
+                Process.GetCurrentProcess().Kill();
+            }
         }
 
         public static void StartGame(LauncherSetup setup) {

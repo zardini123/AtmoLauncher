@@ -8,6 +8,7 @@ using ByteSizeLib;
 using Gtk;
 using UpdateLib;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Interface {
     internal class Launcher {
@@ -19,6 +20,7 @@ namespace Interface {
         public Window Window;
         public ProgressBar ProgressBar;
         public Button PlayButton;
+        public TextView PatchNotes;
 
         public Launcher(LauncherSetup setup, Builder builder) {
             _setup = setup;
@@ -30,11 +32,16 @@ namespace Interface {
             Window.Title = _setup.Title;
             Window.Hidden += (sender, eventArgs) => Application.Quit();
             Window.Show();
+            PatchNotes = (TextView)_builder.GetObject("PatchNotes");
             ProgressBar = (ProgressBar) _builder.GetObject("ProgressBar");
             PlayButton = (Button) _builder.GetObject("PlayButton");
             PlayButton.Clicked += (sender, args) => {
                 Program.StartGame(_setup);
             };
+
+            Application.Invoke((s,e)=> {
+                PatchNotes.Buffer.Text = "Welcome to Atmosphir! \nYou're using a BETA version of our custom launcher. Please report all issues on the forum at http://onemoreblock.com/.";
+            });
 
             Task.Run(() => CheckAndUpdate());
         }
@@ -97,9 +104,29 @@ namespace Interface {
 
                 UpdateProgress progress = JsonConvert.DeserializeObject<UpdateProgress>(curProgress);
 
-                if (progress == null)
+                if (progress == null) {
                     progress = new UpdateProgress();
+                    progress.setVersion(version);
+                }
 
+                if (progress.Downloaded == 0)
+                    progress.setVersion(version);
+
+                if (progress.TargetVersion != version) {
+                    UpdateLib.Version oldV = progress.TargetVersion;
+                    Application.Invoke((sender, args) => {
+                        var dialog = new MessageDialog(Window, DialogFlags.Modal, MessageType.Info, ButtonsType.Ok,
+                            false, "Your previous download progress was for v{0}, but the target version is v{1}. As a result, your download progress was reset.",
+                            oldV, version) { Title = "Progress Version Mismatch" };
+
+                        dialog.Run();
+                        dialog.Destroy();
+                    });
+
+                    progress.setVersion(version);
+                    progress.DownloadedFiles = new List<string>();
+                }
+                    
                 List<KeyValuePair<string, int>> changesLeft = changes.NewSizes.Where(c => !progress.DownloadedFiles.Contains(c.Key)).ToList();
 
                 var totalSize = ByteSize.FromBytes(changesLeft.Sum(kvp => kvp.Value));
@@ -107,17 +134,15 @@ namespace Interface {
                 foreach (var change in changesLeft)
                 {
                     var relativePath = change.Key;
-                    long fileSize = 0;
-                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version, (current, size) =>
+                    //long fileSize = 0;
+                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version);
+
+                    currentDownloaded += change.Value;
+
+                    Application.Invoke((_, args) =>
                     {
-                        fileSize = size;
-                        var currentTotalBytes = ByteSize.FromBytes(current + currentDownloaded);
-                        Application.Invoke((_, args) =>
-                        {
-                            UpdateDownloadProgress(relativePath, currentTotalBytes, totalSize);
-                        });
+                        UpdateDownloadProgress(relativePath, ByteSize.FromBytes(currentDownloaded), totalSize);
                     });
-                    currentDownloaded += fileSize;
 
                     progress.DownloadedFiles.Add(change.Key);
                     File.WriteAllText(progressFile, JsonConvert.SerializeObject(progress));
@@ -157,6 +182,10 @@ namespace Interface {
                         dialog.Destroy();
                     });
                 }
+            }
+
+            if (updater.GetProjectName() == _setup.LauncherProject) {
+                Program.RebootOrig();
             }
         }
 
