@@ -25,6 +25,10 @@ namespace UpdateLib {
             return response.Body;
         }
 
+        public string GetProjectName() {
+            return _project;
+        }
+
         public async Task<ChangeSummary> GetChanges(Version current, Version target) {
             var response = await Post<VersionDelta, ChangeSummary>("get_changes", new VersionDelta {
                 Current = current,
