@@ -1,6 +1,6 @@
 AtmoLauncher
 ==========
-This is a custom-built launcher intended for updating Atmosphir, however, it can be used with any other application. The server can be hosted on a Windows machine or Mac using Mono if you decide to go with the .NET version, but a PHP version of the server is also available for use on a webserver. 
+This is a custom-built launcher intended for updating Atmosphir, however, it can be used with any other application. The server can be hosted on a Windows machine or Mac using Mono if you decide to go with the .NET version, but a PHP version of the server is also available. 
 
 Troposphir
 ==========
