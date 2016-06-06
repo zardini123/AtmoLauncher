@@ -21,6 +21,7 @@ namespace Interface {
         public ProgressBar ProgressBar;
         public Button PlayButton;
         public TextView PatchNotes;
+        public Image HeaderImage;
 
         public Launcher(LauncherSetup setup, Builder builder) {
             _setup = setup;
@@ -38,6 +39,11 @@ namespace Interface {
             PlayButton.Clicked += (sender, args) => {
                 Program.StartGame(_setup);
             };
+
+            HeaderImage = (Image)_builder.GetObject("HeaderImage");
+            var headerLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LaunchHeader.bmp");
+            if (File.Exists(headerLocation))
+                HeaderImage.Pixbuf = new Gdk.Pixbuf(headerLocation);
 
             Application.Invoke((s,e)=> {
                 PatchNotes.Buffer.Text = "Welcome to Atmosphir! \nYou're using a BETA version of our custom launcher. Please report all issues on the forum at http://onemoreblock.com/.";
@@ -63,16 +69,13 @@ namespace Interface {
             PlayButton.Label = "Updating";
             ProgressBar.Text = "Checking for updates";
 
-            try
-            {
+            try {
                 var cache = ChangeCache.FromFile(Path.Combine(targetPath, "version.json"));
                 var version = await updater.FindLatestVersion();
                 Console.WriteLine("Local version: {0}, Latest version: {1}", cache.Version, version);
-                if (cache.Version >= version)
-                {
+                if (cache.Version >= version) {
                     Console.WriteLine("No updates available.");
-                    Application.Invoke((sender, args) =>
-                    {
+                    Application.Invoke((sender, args) => {
                         PlayButton.Sensitive = true;
                         PlayButton.Label = "Play";
                         ProgressBar.Text = "No updates available";
@@ -80,8 +83,7 @@ namespace Interface {
                     return;
                 }
 
-                Application.Invoke((sender, args) =>
-                {
+                Application.Invoke((sender, args) => {
                     ProgressBar.Text = "Getting version " + version + " from server...";
                     PlayButton.Sensitive = false;
                     PlayButton.Label = "Updating";
@@ -131,16 +133,14 @@ namespace Interface {
 
                 var totalSize = ByteSize.FromBytes(changesLeft.Sum(kvp => kvp.Value));
                 long currentDownloaded = 0;
-                foreach (var change in changesLeft)
-                {
+                foreach (var change in changesLeft) {
                     var relativePath = change.Key;
                     //long fileSize = 0;
                     await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version);
 
                     currentDownloaded += change.Value;
 
-                    Application.Invoke((_, args) =>
-                    {
+                    Application.Invoke((_, args) => {
                         UpdateDownloadProgress(relativePath, ByteSize.FromBytes(currentDownloaded), totalSize);
                     });
 
@@ -152,19 +152,18 @@ namespace Interface {
                 if (File.Exists(progressFile))
                     File.Delete(progressFile);
 
-                Application.Invoke((sender, args) =>
-                {
+                Application.Invoke((sender, args) => {
                     PlayButton.Sensitive = true;
                     PlayButton.Label = "Play";
                     ProgressBar.Text = "Finished Updating";
                 });
+
+                if (updater.GetProjectName() == _setup.LauncherProject)
+                    Program.RebootOrig();
             }
-            catch (Exception e)
-            {
-                if (e is System.Net.WebException || e is System.Net.Http.HttpRequestException || e is System.Net.Sockets.SocketException)
-                {
-                    Application.Invoke((sender, args) =>
-                    {
+            catch (Exception e) {
+                if (e is System.Net.WebException || e is System.Net.Http.HttpRequestException || e is System.Net.Sockets.SocketException) {
+                    Application.Invoke((sender, args) => {
                         PlayButton.Sensitive = true;
                         PlayButton.Label = "Play";
                         ProgressBar.Text = "Couldn't connect to update server.";
@@ -182,10 +181,6 @@ namespace Interface {
                         dialog.Destroy();
                     });
                 }
-            }
-
-            if (updater.GetProjectName() == _setup.LauncherProject) {
-                Program.RebootOrig();
             }
         }
 

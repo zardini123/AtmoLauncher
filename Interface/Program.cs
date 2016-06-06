@@ -21,17 +21,24 @@ namespace Interface {
         public static void Main(string[] args) {
             var immediateStart = false;
             var update = false;
+            var atmoLink = "";
 
             if (args.Length > 0) {
                 try {
                     new OptionSet {
                         {"s|start", "Immediately starts the game, without checking for updates.",s => immediateStart = s != null},
-                        {"u|update", "Initiates interface, and starts updating.",u => update = u != null}
+                        {"u|update", "Initiates interface, and starts updating.",u => update = u != null},
+                        {"a|atmourl=", "",a => atmoLink = a }
                     }.Parse(args);
                 } catch (OptionException e) {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Try `{0} --help` for usage information.", ExecutableName);
                     return;
+                }
+
+                if (atmoLink != "" && !atmoLink.StartsWith("atmo://")) {
+                    //Fix for Mac. When the link comes in, the url part is chopped off.
+                    atmoLink = "atmo://" + atmoLink;
                 }
             }
 
@@ -56,6 +63,10 @@ namespace Interface {
                     DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
                 });
 
+                if (atmoLink != "") {
+                    StartGame(setup, atmoLink);
+                    return;
+                }
                 if (immediateStart) {
                     StartGame(setup);
                     return;
@@ -93,6 +104,10 @@ namespace Interface {
         }
 
         public static void StartGame(LauncherSetup setup) {
+            StartGame(setup, setup.ExecuteArgs);
+        }
+
+        public static void StartGame(LauncherSetup setup, string args) {
             var gamePath = Path.Combine(
                 Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
                 setup.GameFolder,
@@ -108,12 +123,10 @@ namespace Interface {
 
                 Process.Start(new ProcessStartInfo(
                     "open",
-                    "-a '" + gamePath + "' -n --args " + setup.ExecuteArgs)
-                { UseShellExecute = false });
-            }
-            else 
-                Process.Start(gamePath, setup.ExecuteArgs);
-                
+                    "-a '" + gamePath + "' -n --args " + args) { UseShellExecute = false });
+            } else
+                Process.Start(gamePath, args);
+
             Process.GetCurrentProcess().Kill();
         }
     }

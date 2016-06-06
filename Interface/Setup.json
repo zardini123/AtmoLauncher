@@ -1,10 +1,10 @@
 ﻿{
   "Title": "Atmosphir Launcher",
-  "RemoteEndpoint": "http://localhost:9900/",
-  "LauncherProject": "atmo_launcher",
-  "GameProject": "atmo_game",
+  "RemoteEndpoint": "http://192.168.1.102/",
+  "LauncherProject": "atmo_launcher_mac",
+  "GameProject": "atmo_game_mac",
   "GameFolder": "game",
-  "GameExecutable": "Atmosphir.exe",
+  "GameExecutable": "Atmosphir.app",
   "ExecuteArgs" :  "standalone",
   "SupportSite": "http://onemoreblock.com/"
 }
