@@ -22,6 +22,7 @@ namespace Interface {
             var immediateStart = false;
             var update = false;
             var atmoLink = "";
+            string atmoLinkLaunchArgs = "";
 
             if (args.Length > 0) {
                 try {
@@ -34,11 +35,6 @@ namespace Interface {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Try `{0} --help` for usage information.", ExecutableName);
                     return;
-                }
-
-                if (atmoLink != "" && !atmoLink.StartsWith("atmo://")) {
-                    //Fix for Mac. When the link comes in, the url part is chopped off.
-                    atmoLink = "atmo://" + atmoLink;
                 }
             }
 
@@ -64,7 +60,8 @@ namespace Interface {
                 });
 
                 if (atmoLink != "") {
-                    StartGame(setup, atmoLink);
+                    atmoLinkLaunchArgs = "standalone \"" + atmoLink + "\"";
+                    StartGame(setup, atmoLinkLaunchArgs);
                     return;
                 }
                 if (immediateStart) {
