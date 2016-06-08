@@ -1,16 +1,16 @@
-﻿using System;
+﻿using ByteSizeLib;
+using Gtk;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using ByteSizeLib;
-using Gtk;
 using UpdateLib;
-using Newtonsoft.Json;
-using System.Text;
 
-namespace Interface {
+namespace Interface
+{
     internal class Launcher {
         private const string ProgressFormat = "{1} of {2} downloaded";
 
