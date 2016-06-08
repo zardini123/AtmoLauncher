@@ -25,6 +25,12 @@ namespace Interface {
             string atmoLinkLaunchArgs = "";
 
             if (args.Length > 0) {
+                foreach (string arg in args) {
+                    if (arg.StartsWith("atmo://")) {
+                        atmoLink = arg;
+                        break;
+                    }
+                }
                 try {
                     new OptionSet {
                         {"s|start", "Immediately starts the game, without checking for updates.",s => immediateStart = s != null},
