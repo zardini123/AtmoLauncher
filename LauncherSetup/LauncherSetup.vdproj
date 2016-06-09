@@ -382,9 +382,9 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.5"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.6"
                 "AllowLaterVersions" = "11:FALSE"
-                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=395269"
+                "InstallUrl" = "8:https://www.microsoft.com/en-us/download/details.aspx?id=48130"
                 }
             }
         }
@@ -899,9 +899,22 @@
         }
         "LaunchCondition"
         {
+            "{836E08B8-0285-4809-BA42-01DB6754A45D}:_7129A21B580F4652BA9FE35EDA1DE924"
+            {
+            "Name" = "8:Gtk#"
+            "Condition" = "8:COMPONENTEXISTSGTK"
+            "Message" = "8:You must have Gtk# installed to run the Atmosphir Launcher. Please install it first, and then try running this application again."
+            "InstallUrl" = "8:http://download.xamarin.com/GTKforWindows/Windows/gtk-sharp-2.12.30.msi"
+            }
         }
         "Locator"
         {
+            "{B8A5E33E-1082-4FE2-AC2E-1197791E9409}:_446AE45F40D543AEA609EC53B4028D1F"
+            {
+            "Name" = "8:Search for Gtk#"
+            "ComponentId" = "8:{CA8017BD-8271-4C93-A409-186375C5A5CA}"
+            "Property" = "8:COMPONENTEXISTSGTK"
+            }
         }
         "MsiBootstrapper"
         {
@@ -913,11 +926,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Atmosphir Launcher"
         "ProductCode" = "8:{F6892192-4E03-4CCC-8A87-496C45FA674C}"
-        "PackageCode" = "8:{56C0CA21-C8DA-49A0-A54A-C3DD146DF798}"
+        "PackageCode" = "8:{A98D0B11-C292-4187-851F-50149EF6C7CF}"
         "UpgradeCode" = "8:{17BBB211-2F2F-4AD6-BA7E-A85BF90BDD20}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
@@ -1058,7 +1071,7 @@
                                                     "Condition" = "8:"
                                                     "Transitive" = "11:FALSE"
                                                     "ValueTypes" = "3:1"
-                                                    "Value" = "8:\"C:\\ProgramData\\Atmosphir\\Interface.exe\" \"%1\""
+                                                    "Value" = "8:\"[CommonAppDataFolder]\\Atmosphir\\Interface.exe\" \"%1\""
                                                     }
                                                 }
                                             }
