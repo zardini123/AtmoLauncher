@@ -41,13 +41,17 @@ namespace Interface
             };
 
             HeaderImage = (Image)_builder.GetObject("HeaderImage");
-            var headerLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LaunchHeader.bmp");
+            var headerLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LaunchHeader.png");
             if (File.Exists(headerLocation))
                 HeaderImage.Pixbuf = new Gdk.Pixbuf(headerLocation);
 
-            Application.Invoke((s,e)=> {
-                PatchNotes.Buffer.Text = "Welcome to Atmosphir! \nYou're using a BETA version of our custom launcher. Please report all issues on the forum at http://onemoreblock.com/.";
-            });
+            var changeLogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "changelog.txt");
+            string patchNotesText = "You're using a BETA version of our custom launcher. Please report all issues on the forum at http://onemoreblock.com/.";
+
+            if (File.Exists(changeLogFile))
+                patchNotesText += "\n\n" + File.ReadAllText(changeLogFile);
+
+            PatchNotes.Buffer.Text = patchNotesText;
 
             Task.Run(() => CheckAndUpdate());
         }
@@ -75,21 +79,26 @@ namespace Interface
                 Console.WriteLine("Local version: {0}, Latest version: {1}", cache.Version, version);
                 if (cache.Version >= version) {
                     Console.WriteLine("No updates available.");
-                    Application.Invoke((sender, args) => {
-                        PlayButton.Sensitive = true;
-                        PlayButton.Label = "Play";
-                        ProgressBar.Text = "No updates available";
-                    });
+                    PlayButton.Sensitive = true;
+                    PlayButton.Label = "Play";
+                    ProgressBar.Text = "No updates available";
                     return;
                 }
 
-                Application.Invoke((sender, args) => {
-                    ProgressBar.Text = "Getting version " + version + " from server...";
-                    PlayButton.Sensitive = false;
-                    PlayButton.Label = "Updating";
-                });
+                if (updater.GetProjectName() == _setup.LauncherProject && !Program.IsUnix && !Program.isRunningAsAdministrator()) {
+                    // We're updating the launcher project on windows without running as administrator, which isn't possible because the main
+                    // files are protected, so we request to run as admin. This will only happen when the Launcher project is being updated.
+                    Program.RebootOrig(true);
+                    return;
+                }
+
+                ProgressBar.Text = "Getting version " + version + " from server...";
+                PlayButton.Sensitive = false;
+                PlayButton.Label = "Updating";
 
                 var changes = await updater.GetChanges(cache.Version, version);
+
+                ProgressBar.Text = "Preparing to update...";
 
                 string progressFile = Path.Combine(targetPath, "updateProgress.json");
 
@@ -135,8 +144,12 @@ namespace Interface
                 long currentDownloaded = 0;
                 foreach (var change in changesLeft) {
                     var relativePath = change.Key;
-                    //long fileSize = 0;
-                    await updater.Download(relativePath, Path.Combine(targetPath, relativePath), version);
+                    var targetFile = Path.Combine(targetPath, relativePath);
+
+                    if (File.Exists(targetFile))
+                        File.Delete(targetFile);
+
+                    await updater.Download(relativePath, targetFile, version);
 
                     currentDownloaded += change.Value;
 

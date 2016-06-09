@@ -115,8 +115,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="appIcon.ico" />
+    <Content Include="changelog.txt" />
     <Content Include="FodyWeavers.xml">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="LaunchHeader.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
