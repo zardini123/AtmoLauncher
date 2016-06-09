@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Interface {
     class Program {
@@ -22,8 +24,15 @@ namespace Interface {
             var immediateStart = false;
             var update = false;
             var atmoLink = "";
+            string atmoLinkLaunchArgs = "";
 
             if (args.Length > 0) {
+                foreach (string arg in args) {
+                    if (arg.StartsWith("atmo://")) {
+                        atmoLink = arg;
+                        break;
+                    }
+                }
                 try {
                     new OptionSet {
                         {"s|start", "Immediately starts the game, without checking for updates.",s => immediateStart = s != null},
@@ -34,11 +43,6 @@ namespace Interface {
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Try `{0} --help` for usage information.", ExecutableName);
                     return;
-                }
-
-                if (atmoLink != "" && !atmoLink.StartsWith("atmo://")) {
-                    //Fix for Mac. When the link comes in, the url part is chopped off.
-                    atmoLink = "atmo://" + atmoLink;
                 }
             }
 
@@ -64,7 +68,8 @@ namespace Interface {
                 });
 
                 if (atmoLink != "") {
-                    StartGame(setup, atmoLink);
+                    atmoLinkLaunchArgs = "standalone \"" + atmoLink + "\"";
+                    StartGame(setup, atmoLinkLaunchArgs);
                     return;
                 }
                 if (immediateStart) {
@@ -82,6 +87,13 @@ namespace Interface {
                     RebootCopy();
                 }
             }
+
+            if (!IsUnix && isRunningAsAdministrator()) {
+                DirectoryInfo dInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                DirectorySecurity dSecurity = dInfo.GetAccessControl();
+                dSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
+                dInfo.SetAccessControl(dSecurity);
+            }
         }
 
         private static void RebootCopy() {
@@ -94,13 +106,22 @@ namespace Interface {
             Process.Start(newPath, "--update");
         }
 
-        public static void RebootOrig() {
+        public static void RebootOrig(bool asAdmin = false) {
+            var processInfo = new ProcessStartInfo(GetOrigPath());
+
+            if (asAdmin)
+                processInfo.Verb = "runas";
+
+            Process.Start(processInfo);
+            Process.GetCurrentProcess().Kill();
+        }
+
+        public static string GetOrigPath() {
             var selfPath = Assembly.GetEntryAssembly().Location;
-            if (selfPath.Contains("old")) {
-                var origPath = selfPath.Replace("old.exe", "exe");
-                Process.Start(origPath);
-                Process.GetCurrentProcess().Kill();
-            }
+            if (selfPath.Contains("old"))
+                return selfPath.Replace("old.exe", "exe");
+            else
+                return selfPath;
         }
 
         public static void StartGame(LauncherSetup setup) {
@@ -128,6 +149,11 @@ namespace Interface {
                 Process.Start(gamePath, args);
 
             Process.GetCurrentProcess().Kill();
+        }
+
+        public static bool isRunningAsAdministrator() {
+            return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
+                .IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

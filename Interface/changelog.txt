@@ -1,0 +1,7 @@
+Changes for v1.0.1:
+- Capacity has been raised significantly (a 300% increase).
+- New "Experimental" category in Design mode.
+- Bungees have been added to the game.
+- Game now connects to the new multiplayer server.
+- atmo:// link protocol now supported.
+- Image caching issue fixed.
