@@ -53,17 +53,22 @@ namespace Interface {
             //    which holds the layout definition.
             // IMPORTANT: When updating it, name the new file 'launcher.bin.new'
 
-            if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"))) {
-                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
-                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin"));
-                File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"), Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin"));
-                File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new"));
+            var newBin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new");
+            var normalBin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin");
+
+            if (File.Exists(newBin)) {
+                if (File.Exists(normalBin))
+                    File.Delete(normalBin);
+                File.Copy(newBin, normalBin);
+                File.Delete(newBin);
             }
-            
-            using (var file = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
+
+            LauncherSetup setup;
+
+            using (var file = File.OpenRead(normalBin))
             using (var stream = new GZipStream(file, CompressionMode.Decompress))
             using (var reader = new StreamReader(stream)) {
-                var setup = JsonConvert.DeserializeObject<LauncherSetup>(reader.ReadLine(), new JsonSerializerSettings {
+                setup = JsonConvert.DeserializeObject<LauncherSetup>(reader.ReadLine(), new JsonSerializerSettings {
                     DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
                 });
 
@@ -86,13 +91,6 @@ namespace Interface {
                 } else {
                     RebootCopy();
                 }
-            }
-
-            if (!IsUnix && isRunningAsAdministrator()) {
-                DirectoryInfo dInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-                DirectorySecurity dSecurity = dInfo.GetAccessControl();
-                dSecurity.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit, PropagationFlags.NoPropagateInherit, AccessControlType.Allow));
-                dInfo.SetAccessControl(dSecurity);
             }
         }
 
@@ -149,11 +147,6 @@ namespace Interface {
                 Process.Start(gamePath, args);
 
             Process.GetCurrentProcess().Kill();
-        }
-
-        public static bool isRunningAsAdministrator() {
-            return (new WindowsPrincipal(WindowsIdentity.GetCurrent()))
-                .IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

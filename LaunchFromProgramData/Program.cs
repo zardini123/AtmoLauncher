@@ -9,7 +9,7 @@ namespace LaunchFromProgramData
         /* Why does this exist?
         /  Well, turns out if the launch application is installed into the Program Files directory it doesn't have permissions to change any files in there,
         /  which we obviously need to do. We'll install this application into Program Files and through it, launch the real Launcher application located
-        /  inside ProgramData
+        /  inside the user's ProgramData
         */
         static void Main(string[] args)
         {

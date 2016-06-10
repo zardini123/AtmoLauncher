@@ -1,6 +1,6 @@
 ﻿{
   "Title": "Atmosphir Launcher",
-  "RemoteEndpoint": "http://localhost/",
+  "RemoteEndpoint": "http://onemoreblock.com/Atmosphir/updater/",
   "LauncherProject": "atmo_launcher",
   "GameProject": "atmo_game",
   "GameFolder": "game",
