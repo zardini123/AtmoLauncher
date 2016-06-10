@@ -175,6 +175,18 @@ namespace Interface
                     ProgressBar.Text = "Finished Updating";
                 });
 
+                if (Program.IsUnix) {
+                    // Update fix for Mac
+                    string executeScript = "";
+
+                    if (updater.GetProjectName() == _setup.LauncherProject)
+                        executeScript = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "atmolauncher");
+                    else if (updater.GetProjectName() == _setup.GameProject)
+                        executeScript = Path.Combine(targetPath, "Contents", "MacOS", "Atmosphir");
+
+                    Program.macChangePerm(executeScript);
+                }
+
                 if (updater.GetProjectName() == _setup.LauncherProject)
                     Program.RebootOrig();
             }

@@ -1,4 +1,4 @@
-﻿namespace PermissionFix
+﻿namespace InstallerExtras
 {
     partial class InstallerAction
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PermissionFix</RootNamespace>
-    <AssemblyName>PermissionFix</AssemblyName>
+    <RootNamespace>InstallerExtras</RootNamespace>
+    <AssemblyName>InstallerExtras</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
