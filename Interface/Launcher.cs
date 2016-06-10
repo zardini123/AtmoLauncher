@@ -69,36 +69,40 @@ namespace Interface
             else
                 targetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), projectRoot);
 
-            PlayButton.Sensitive = false;
-            PlayButton.Label = "Updating";
-            ProgressBar.Text = "Checking for updates";
-
+            Application.Invoke((sender, args) => {
+                PlayButton.Sensitive = false;
+                PlayButton.Label = "Updating";
+                ProgressBar.Text = "Checking for updates";
+            });
+            
             try {
                 var cache = ChangeCache.FromFile(Path.Combine(targetPath, "version.json"));
                 var version = await updater.FindLatestVersion();
                 Console.WriteLine("Local version: {0}, Latest version: {1}", cache.Version, version);
                 if (cache.Version >= version) {
                     Console.WriteLine("No updates available.");
-                    PlayButton.Sensitive = true;
-                    PlayButton.Label = "Play";
-                    ProgressBar.Text = "No updates available";
+
+                    Application.Invoke((sender, args)=> {
+                        PlayButton.Sensitive = true;
+                        PlayButton.Label = "Play";
+                        ProgressBar.Text = "No updates available";
+                    });
+                    
                     return;
                 }
 
-                if (updater.GetProjectName() == _setup.LauncherProject && !Program.IsUnix && !Program.isRunningAsAdministrator()) {
-                    // We're updating the launcher project on windows without running as administrator, which isn't possible because the main
-                    // files are protected, so we request to run as admin. This will only happen when the Launcher project is being updated.
-                    Program.RebootOrig(true);
-                    return;
-                }
-
-                ProgressBar.Text = "Getting version " + version + " from server...";
-                PlayButton.Sensitive = false;
-                PlayButton.Label = "Updating";
-
+                Application.Invoke((sender, args)=> {
+                    ProgressBar.Text = "Getting version " + version + " from server...";
+                    PlayButton.Sensitive = false;
+                    PlayButton.Label = "Updating";
+                });
+                
                 var changes = await updater.GetChanges(cache.Version, version);
 
-                ProgressBar.Text = "Preparing to update...";
+                Application.Invoke((sender, args) =>
+                {
+                    ProgressBar.Text = "Preparing to update...";
+                });               
 
                 string progressFile = Path.Combine(targetPath, "updateProgress.json");
 

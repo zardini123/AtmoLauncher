@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{A5AC2421-CDB6-4285-A854-8BBAAFAAFF62}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,6 +17,8 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LauncherSetup", "LauncherSetup\LauncherSetup.vdproj", "{45372237-DD88-4399-83C1-D99CBEE54F16}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchFromProgramData", "LaunchFromProgramData\LaunchFromProgramData.csproj", "{B0BC7D23-B6F9-4023-A351-A8DCC1A753AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionFix", "PermissionFix\PermissionFix.csproj", "{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{B0BC7D23-B6F9-4023-A351-A8DCC1A753AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0BC7D23-B6F9-4023-A351-A8DCC1A753AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0BC7D23-B6F9-4023-A351-A8DCC1A753AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
