@@ -148,6 +148,10 @@ namespace Interface
                 long currentDownloaded = 0;
                 foreach (var change in changesLeft) {
                     var relativePath = change.Key;
+
+                    if(Program.IsUnix)
+                        relativePath = relativePath.Replace('\\','/');
+
                     var targetFile = Path.Combine(targetPath, relativePath);
 
                     if (File.Exists(targetFile))

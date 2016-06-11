@@ -46,13 +46,13 @@
         "Entry"
         {
         "MsmKey" = "8:_1B0F5D1E004C065210587B83B9C9484E"
-        "OwnerKey" = "8:_729868021BE54CC187D3F4B029E63AE9"
+        "OwnerKey" = "8:_84D8B9C7FD31451999839AC72F6423EF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1B0F5D1E004C065210587B83B9C9484E"
-        "OwnerKey" = "8:_84D8B9C7FD31451999839AC72F6423EF"
+        "OwnerKey" = "8:_729868021BE54CC187D3F4B029E63AE9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -232,13 +232,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_729868021BE54CC187D3F4B029E63AE9"
+        "OwnerKey" = "8:_84D8B9C7FD31451999839AC72F6423EF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_84D8B9C7FD31451999839AC72F6423EF"
+        "OwnerKey" = "8:_729868021BE54CC187D3F4B029E63AE9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -995,7 +995,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Atmosphir Launcher"
         "ProductCode" = "8:{F6892192-4E03-4CCC-8A87-496C45FA674C}"
-        "PackageCode" = "8:{93B0F888-7618-4C87-8EAF-A0B3E14833AB}"
+        "PackageCode" = "8:{46541D2B-0BD9-4BAC-BAEF-83FEEF49250E}"
         "UpgradeCode" = "8:{17BBB211-2F2F-4AD6-BA7E-A85BF90BDD20}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1140,7 +1140,7 @@
                                                     "Condition" = "8:"
                                                     "Transitive" = "11:FALSE"
                                                     "ValueTypes" = "3:1"
-                                                    "Value" = "8:\"[CommonAppDataFolder]\\Atmosphir\\Interface.exe\" \"%1\""
+                                                    "Value" = "8:\"[CommonAppDataFolder]Atmosphir\\Interface.exe\" \"%1\""
                                                     }
                                                 }
                                             }
@@ -1652,7 +1652,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_729868021BE54CC187D3F4B029E63AE9"
             {
-            "SourcePath" = "8:..\\PermissionFix\\obj\\Debug\\PermissionFix.dll"
+            "SourcePath" = "8:..\\PermissionFix\\obj\\Debug\\InstallerExtras.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AB0F1E5F484C4EBB966734B4F21CC631"
