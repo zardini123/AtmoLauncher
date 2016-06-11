@@ -18,7 +18,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LauncherSetup", "LauncherSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchFromProgramData", "LaunchFromProgramData\LaunchFromProgramData.csproj", "{B0BC7D23-B6F9-4023-A351-A8DCC1A753AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PermissionFix", "PermissionFix\PermissionFix.csproj", "{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerExtras", "PermissionFix\InstallerExtras.csproj", "{B4C5BAA5-180A-4EB8-9DB5-90470490BF62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

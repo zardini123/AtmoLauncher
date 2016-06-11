@@ -148,6 +148,10 @@ namespace Interface
                 long currentDownloaded = 0;
                 foreach (var change in changesLeft) {
                     var relativePath = change.Key;
+
+                    if(Program.IsUnix)
+                        relativePath = relativePath.Replace('\\','/');
+
                     var targetFile = Path.Combine(targetPath, relativePath);
 
                     if (File.Exists(targetFile))
@@ -174,6 +178,18 @@ namespace Interface
                     PlayButton.Label = "Play";
                     ProgressBar.Text = "Finished Updating";
                 });
+
+                if (Program.IsUnix) {
+                    // Update fix for Mac
+                    string executeScript = "";
+
+                    if (updater.GetProjectName() == _setup.LauncherProject)
+                        executeScript = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "atmolauncher");
+                    else if (updater.GetProjectName() == _setup.GameProject)
+                        executeScript = Path.Combine(targetPath, "Contents", "MacOS", "Atmosphir");
+
+                    Program.macChangePerm(executeScript);
+                }
 
                 if (updater.GetProjectName() == _setup.LauncherProject)
                     Program.RebootOrig();

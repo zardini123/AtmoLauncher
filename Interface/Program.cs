@@ -51,46 +51,37 @@ namespace Interface {
             //    (such as update server, window title, etc)
             //  - The remainder of the file is the contents of a Gtk.Builder XML file,
             //    which holds the layout definition.
-            // IMPORTANT: When updating it, name the new file 'launcher.bin.new'
-
-            var newBin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin.new");
-            var normalBin = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin");
-
-            if (File.Exists(newBin)) {
-                if (File.Exists(normalBin))
-                    File.Delete(normalBin);
-                File.Copy(newBin, normalBin);
-                File.Delete(newBin);
-            }
 
             LauncherSetup setup;
-
-            using (var file = File.OpenRead(normalBin))
+            string builderString;
+            using (var file = File.OpenRead(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "launcher.bin")))
             using (var stream = new GZipStream(file, CompressionMode.Decompress))
             using (var reader = new StreamReader(stream)) {
                 setup = JsonConvert.DeserializeObject<LauncherSetup>(reader.ReadLine(), new JsonSerializerSettings {
                     DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
                 });
 
-                if (atmoLink != "") {
-                    atmoLinkLaunchArgs = "standalone \"" + atmoLink + "\"";
-                    StartGame(setup, atmoLinkLaunchArgs);
-                    return;
-                }
-                if (immediateStart) {
-                    StartGame(setup);
-                    return;
-                }
-                if (update) {
-                    Application.Init();
-                    var builder = new Builder();
-                    builder.AddFromString(reader.ReadToEnd());
+                builderString = reader.ReadToEnd();
+            }
 
-                    new Launcher(setup, builder).Initialize();
-                    Application.Run();
-                } else {
-                    RebootCopy();
-                }
+            if (atmoLink != "") {
+                atmoLinkLaunchArgs = "standalone \"" + atmoLink + "\"";
+                StartGame(setup, atmoLinkLaunchArgs);
+                return;
+            }
+            if (immediateStart) {
+                StartGame(setup);
+                return;
+            }
+            if (update) {
+                Application.Init();
+                var builder = new Builder();
+                builder.AddFromString(builderString);
+
+                new Launcher(setup, builder).Initialize();
+                Application.Run();
+            } else {
+                RebootCopy();
             }
         }
 
@@ -120,6 +111,12 @@ namespace Interface {
                 return selfPath.Replace("old.exe", "exe");
             else
                 return selfPath;
+        }
+
+        public static void macChangePerm(string file) {
+            Process.Start(new ProcessStartInfo(
+                    "chmod", "+x " + file)
+            { UseShellExecute = false });
         }
 
         public static void StartGame(LauncherSetup setup) {
