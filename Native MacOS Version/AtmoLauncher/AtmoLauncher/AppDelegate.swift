@@ -12,14 +12,25 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
-
-
+    
+    @IBOutlet weak var gearView: NSView!
+    
+    let frameRate = 60.0 // FPS
+    let rate = 1.0 // Rotations per second
+    
+    @IBOutlet weak var rateSlider: NSSlider!
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        // Insert code here to initialize your application
+        var rotateGear = NSTimer.scheduledTimerWithTimeInterval(1.0 / frameRate, target: self, selector: Selector("rotateGear"), userInfo: nil, repeats: true)
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
+    }
+    
+    func rotateGear () {
+        gearView.frameCenterRotation += CGFloat((360.0 / frameRate) * (Double)(rateSlider.floatValue))
+        gearView.display()
     }
 }
 
