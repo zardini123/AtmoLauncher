@@ -11,7 +11,7 @@
 		E40D720C1D0E0652003D6B14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E40D720B1D0E0652003D6B14 /* Assets.xcassets */; };
 		E40D720F1D0E0652003D6B14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E40D720D1D0E0652003D6B14 /* MainMenu.xib */; };
 		E40D721A1D0E0652003D6B14 /* AtmoLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40D72191D0E0652003D6B14 /* AtmoLauncherTests.swift */; };
-		E48D82881D1085BB000294A9 /* Whitney-Semibold-Dynamic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E48D82871D1085BB000294A9 /* Whitney-Semibold-Dynamic.ttf */; };
+		E48D828A1D1094A6000294A9 /* Whitney-Semibold-Dynamic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E48D82891D109460000294A9 /* Whitney-Semibold-Dynamic.ttf */; };
 		E4DA725C1D0F90F10076AB46 /* RotateImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DA725B1D0F90F10076AB46 /* RotateImage.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +34,7 @@
 		E40D72151D0E0652003D6B14 /* Atmo Launcher.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atmo Launcher.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40D72191D0E0652003D6B14 /* AtmoLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtmoLauncherTests.swift; sourceTree = "<group>"; };
 		E40D721B1D0E0652003D6B14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E48D82871D1085BB000294A9 /* Whitney-Semibold-Dynamic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney-Semibold-Dynamic.ttf"; path = "../../../../../../Downloads/Whitney-Semibold-Dynamic.ttf"; sourceTree = "<group>"; };
+		E48D82891D109460000294A9 /* Whitney-Semibold-Dynamic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Whitney-Semibold-Dynamic.ttf"; path = "../../../../../../Downloads/Whitney-Semibold-Dynamic.ttf"; sourceTree = "<group>"; };
 		E4DA725B1D0F90F10076AB46 /* RotateImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -79,7 +79,7 @@
 			children = (
 				E40D72091D0E0652003D6B14 /* AppDelegate.swift */,
 				E40D720B1D0E0652003D6B14 /* Assets.xcassets */,
-				E48D82871D1085BB000294A9 /* Whitney-Semibold-Dynamic.ttf */,
+				E48D82891D109460000294A9 /* Whitney-Semibold-Dynamic.ttf */,
 				E40D720D1D0E0652003D6B14 /* MainMenu.xib */,
 				E40D72101D0E0652003D6B14 /* Info.plist */,
 				E4DA725B1D0F90F10076AB46 /* RotateImage.swift */,
@@ -177,7 +177,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E48D82881D1085BB000294A9 /* Whitney-Semibold-Dynamic.ttf in Resources */,
+				E48D828A1D1094A6000294A9 /* Whitney-Semibold-Dynamic.ttf in Resources */,
 				E40D720C1D0E0652003D6B14 /* Assets.xcassets in Resources */,
 				E40D720F1D0E0652003D6B14 /* MainMenu.xib in Resources */,
 			);
