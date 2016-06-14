@@ -18,7 +18,7 @@
                 <outlet property="downloadProgressBar" destination="X2p-x5-tNB" id="OsI-U9-Ufk"/>
                 <outlet property="gear" destination="ahw-ik-7gJ" id="eFU-k7-Kt3"/>
                 <outlet property="gearCenter" destination="YyT-TU-chZ" id="8l9-LU-Q8W"/>
-                <outlet property="gearView" destination="ahw-ik-7gJ" id="TKW-cb-zJZ"/>
+                <outlet property="gearView" destination="ahw-ik-7gJ" id="0Zx-nS-Scu"/>
                 <outlet property="mainView" destination="EiT-Mj-1SZ" id="JyV-iu-ocH"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -426,7 +426,7 @@
                     </imageView>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ahw-ik-7gJ">
                         <rect key="frame" x="140" y="80" width="200" height="200"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="Atmosphir Gear Gear" id="wsL-29-ZdF"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Atmosphir Gear Gear" id="wsL-29-ZdF"/>
                     </imageView>
                     <button horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Fv-kO-A81">
                         <rect key="frame" x="20" y="13" width="13" height="13"/>

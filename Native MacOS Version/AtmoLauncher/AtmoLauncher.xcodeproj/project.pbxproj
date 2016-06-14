@@ -11,6 +11,7 @@
 		E40D720C1D0E0652003D6B14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E40D720B1D0E0652003D6B14 /* Assets.xcassets */; };
 		E40D720F1D0E0652003D6B14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E40D720D1D0E0652003D6B14 /* MainMenu.xib */; };
 		E40D721A1D0E0652003D6B14 /* AtmoLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E40D72191D0E0652003D6B14 /* AtmoLauncherTests.swift */; };
+		E4DA725C1D0F90F10076AB46 /* RotateImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DA725B1D0F90F10076AB46 /* RotateImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		E40D72151D0E0652003D6B14 /* AtmoLauncherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AtmoLauncherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E40D72191D0E0652003D6B14 /* AtmoLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtmoLauncherTests.swift; sourceTree = "<group>"; };
 		E40D721B1D0E0652003D6B14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E4DA725B1D0F90F10076AB46 /* RotateImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				E40D720B1D0E0652003D6B14 /* Assets.xcassets */,
 				E40D720D1D0E0652003D6B14 /* MainMenu.xib */,
 				E40D72101D0E0652003D6B14 /* Info.plist */,
+				E4DA725B1D0F90F10076AB46 /* RotateImage.swift */,
 			);
 			path = AtmoLauncher;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4DA725C1D0F90F10076AB46 /* RotateImage.swift in Sources */,
 				E40D720A1D0E0652003D6B14 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,6 +377,7 @@
 				E40D72201D0E0652003D6B14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E40D72211D0E0652003D6B14 /* Build configuration list for PBXNativeTarget "AtmoLauncherTests" */ = {
 			isa = XCConfigurationList;
@@ -381,6 +386,7 @@
 				E40D72231D0E0652003D6B14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
