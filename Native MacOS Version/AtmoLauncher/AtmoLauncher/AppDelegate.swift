@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var gearCenter: NSImageView!
     
     @IBOutlet weak var downloadProgressBar: NSProgressIndicator!
+    @IBOutlet weak var completionText: NSTextField!
     
     let frameRate = 60.0 // FPS
     let rate = 1.0 // Rotations per second
@@ -56,16 +57,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
         
-        downloadProgressBar.incrementBy(1.0)
+        downloadProgressBar.incrementBy(0.1)
+        completionText.stringValue = String(format:"%.0f", downloadProgressBar.doubleValue) + "%"
     }
     
     @IBAction func helpToolbar(sender: NSMenuItem) {
         if let checkURL = NSURL(string: "http://onemoreblock.com/forum/viewtopic.php?f=24&t=3051") {
             if NSWorkspace.sharedWorkspace().openURL(checkURL) {
-                print("url successfully opened")
+                print("URL successfully opened")
             }
         } else {
-            print("invalid url")
+            print("Invalid URL")
         }
     }
 }

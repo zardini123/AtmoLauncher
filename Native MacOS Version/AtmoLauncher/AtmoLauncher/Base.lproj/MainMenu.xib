@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
@@ -11,8 +12,9 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="AtmoLauncher" customModuleProvider="target">
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Atmo_Launcher" customModuleProvider="target">
             <connections>
+                <outlet property="completionText" destination="ZqH-FE-LVA" id="tK0-CT-YRc"/>
                 <outlet property="downloadProgressBar" destination="X2p-x5-tNB" id="OsI-U9-Ufk"/>
                 <outlet property="gear" destination="ahw-ik-7gJ" id="eFU-k7-Kt3"/>
                 <outlet property="gearCenter" destination="YyT-TU-chZ" id="8l9-LU-Q8W"/>
@@ -86,14 +88,14 @@
         <window title="Atmo Launcher" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="678" height="501"/>
+            <rect key="contentRect" x="335" y="390" width="829" height="605"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1057"/>
             <view key="contentView" autoresizesSubviews="NO" wantsLayer="YES" canDrawConcurrently="YES" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="678" height="501"/>
+                <rect key="frame" x="0.0" y="0.0" width="829" height="605"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVY-eh-gtK">
-                        <rect key="frame" x="124" y="355" width="431" height="131"/>
+                        <rect key="frame" x="199" y="474" width="431" height="131"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Atm     sphir" id="Bda-be-a4K">
                             <font key="font" size="73" name="Whitney-Semibold"/>
                             <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
@@ -101,19 +103,27 @@
                         </textFieldCell>
                     </textField>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YyT-TU-chZ">
-                        <rect key="frame" x="279" y="370" width="100" height="100"/>
+                        <rect key="frame" x="350" y="485" width="100" height="100"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Atmosphir Gear Center" id="gdf-fZ-mQC"/>
                     </imageView>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ahw-ik-7gJ">
-                        <rect key="frame" x="279" y="370" width="100" height="100"/>
+                        <rect key="frame" x="350" y="485" width="100" height="100"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Atmosphir Gear Gear" id="wsL-29-ZdF"/>
                     </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZqH-FE-LVA">
+                        <rect key="frame" x="294" y="51" width="240" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="0% Done" id="Wr9-Il-PE0">
+                            <font key="font" size="15" name="Whitney-Medium"/>
+                            <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <progressIndicator wantsLayer="YES" fixedFrame="YES" maxValue="100" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="X2p-x5-tNB">
-                        <rect key="frame" x="119" y="33" width="440" height="20"/>
+                        <rect key="frame" x="194" y="34" width="440" height="20"/>
                     </progressIndicator>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="439" y="438.5"/>
+            <point key="canvasLocation" x="522.5" y="499.5"/>
         </window>
     </objects>
     <resources>
