@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AtmoLauncher/AppDelegate.swift"
-            timestampString = "487559877.570494"
+            timestampString = "487561472.325392"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "AppDelegate"
             landmarkType = "3">
          </BreakpointContent>

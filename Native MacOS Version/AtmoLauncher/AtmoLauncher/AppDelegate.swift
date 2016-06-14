@@ -23,14 +23,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let frameRate = 60.0 // FPS
     let rate = 1.0 // Rotations per second
-    var time = 0.0
+    var currentAngle = 0.0
     
     var rotateGear : NSTimer = NSTimer()
     
     var moveMainView : Bool = false
     var oldMove : Bool = false
     
+    var oldImage : NSImage!
+    
     func applicationDidFinishLaunching(aNotification: NSNotification) {
+        oldImage = gearView.image!.copy() as! NSImage
         
         rotateGear = NSTimer.scheduledTimerWithTimeInterval(1.0 / frameRate, target: self, selector: Selector("rotateGearFunction"), userInfo: nil, repeats: true)
     }
@@ -39,7 +42,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func rotateGearFunction () {
-        gearView.image = gearView.image?.imageRotatedByDegreess(CGFloat(((360.0 / frameRate) * (Double)(rate)) * time))
+        currentAngle += (360.0 / frameRate) * (Double)(rate)
+        
+        let queue = NSOperationQueue()
+        
+        queue.addOperationWithBlock() {
+            let newImage = self.oldImage!.imageRotatedByDegreess(CGFloat(self.currentAngle))
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock() {
+                self.gearView.image = newImage
+            }
+        }
         
         downloadProgressBar.incrementBy(1.0)
         
@@ -54,8 +67,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
             }
         }
-        
-        time += 1.0 / frameRate
     }
     
     @IBAction func pressedChangeLogButton(sender: NSButton) {
