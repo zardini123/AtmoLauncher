@@ -34,7 +34,7 @@
 	<string>NSApplication</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Whitney-Semibold-Dynamic</string>
+		<string>Whitney-Semibold.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -14,8 +14,10 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Atmo_Launcher" customModuleProvider="target">
             <connections>
+                <outlet property="atmosphirText" destination="pVY-eh-gtK" id="kus-dl-7ea"/>
                 <outlet property="completionText" destination="ZqH-FE-LVA" id="tK0-CT-YRc"/>
                 <outlet property="downloadProgressBar" destination="X2p-x5-tNB" id="OsI-U9-Ufk"/>
+                <outlet property="fontManager" destination="YLy-65-1bz" id="ulL-sf-goP"/>
                 <outlet property="gear" destination="ahw-ik-7gJ" id="eFU-k7-Kt3"/>
                 <outlet property="gearCenter" destination="YyT-TU-chZ" id="8l9-LU-Q8W"/>
                 <outlet property="gearView" destination="ahw-ik-7gJ" id="0Zx-nS-Scu"/>
@@ -97,7 +99,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pVY-eh-gtK">
                         <rect key="frame" x="199" y="474" width="431" height="131"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Atm     sphir" id="Bda-be-a4K">
-                            <font key="font" size="73" name="Whitney-Semibold"/>
+                            <font key="font" size="72" name="Whitney-Semibold"/>
                             <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
