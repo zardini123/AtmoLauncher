@@ -13,24 +13,68 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow!
     
+    @IBOutlet weak var mainView: NSView!
+    
     @IBOutlet weak var gearView: NSView!
+    @IBOutlet weak var gearCenter: NSImageView!
+    
+    @IBOutlet weak var downloadProgressBar: NSProgressIndicator!
     
     let frameRate = 60.0 // FPS
     let rate = 1.0 // Rotations per second
     
-    @IBOutlet weak var rateSlider: NSSlider!
+    var rotateGear : NSTimer = NSTimer()
+    
+    var moveMainView : Bool = false
+    var oldMove : Bool = false
+    
+    var mouseLocation: NSPoint {
+        return NSEvent.mouseLocation()
+    }
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
-        var rotateGear = NSTimer.scheduledTimerWithTimeInterval(1.0 / frameRate, target: self, selector: Selector("rotateGear"), userInfo: nil, repeats: true)
+        rotateGear = NSTimer.scheduledTimerWithTimeInterval(1.0 / frameRate, target: self, selector: Selector("rotateGearFunction"), userInfo: nil, repeats: true)
     }
-
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
     
-    func rotateGear () {
-        gearView.frameCenterRotation += CGFloat((360.0 / frameRate) * (Double)(rateSlider.floatValue))
-        gearView.display()
+    func rotateGearFunction () {
+        gearView.frameCenterRotation += CGFloat((360.0 / frameRate) * (Double)(rate))
+        
+        downloadProgressBar.incrementBy(1.0)
+        
+        if (oldMove != moveMainView) {
+            if (moveMainView) {
+                if (moveMainViewToValue((Double)(mainView.frame.size.height) - 100.0, rate: 20.0)) {
+                    oldMove = moveMainView
+                }
+            } else {
+                if (moveMainViewToValue(20.0, rate: -20.0)) {
+                    oldMove = moveMainView
+                }
+            }
+        }
+    }
+    
+    @IBAction func pressedChangeLogButton(sender: NSButton) {
+        moveMainView = !moveMainView
+    }
+    
+    func moveMainViewToValue (yValue : Double, rate : Double) -> Bool {
+        if (rate >= 0) {
+            if ((Double)(-mainView.bounds.origin.y) >= yValue) {
+                return true
+            }
+        } else {
+            if ((Double)(-mainView.bounds.origin.y) < yValue) {
+                return true
+            }
+        }
+        
+        mainView.translateOriginToPoint(NSPoint(x: 0.0, y: rate))
+        
+        return false
     }
 }
 
