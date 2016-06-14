@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E40D72051D0E0652003D6B14"
-               BuildableName = "AtmoLauncher.app"
-               BlueprintName = "AtmoLauncher"
-               ReferencedContainer = "container:AtmoLauncher.xcodeproj">
+               BuildableName = "Atmo Launcher.app"
+               BlueprintName = "Atmo Launcher"
+               ReferencedContainer = "container:Atmo Launcher.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E40D72141D0E0652003D6B14"
-               BuildableName = "AtmoLauncherTests.xctest"
-               BlueprintName = "AtmoLauncherTests"
-               ReferencedContainer = "container:AtmoLauncher.xcodeproj">
+               BuildableName = "Atmo Launcher.xctest"
+               BlueprintName = "Atmo LauncherTests"
+               ReferencedContainer = "container:Atmo Launcher.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E40D72051D0E0652003D6B14"
-            BuildableName = "AtmoLauncher.app"
-            BlueprintName = "AtmoLauncher"
-            ReferencedContainer = "container:AtmoLauncher.xcodeproj">
+            BuildableName = "Atmo Launcher.app"
+            BlueprintName = "Atmo Launcher"
+            ReferencedContainer = "container:Atmo Launcher.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E40D72051D0E0652003D6B14"
-            BuildableName = "AtmoLauncher.app"
-            BlueprintName = "AtmoLauncher"
-            ReferencedContainer = "container:AtmoLauncher.xcodeproj">
+            BuildableName = "Atmo Launcher.app"
+            BlueprintName = "Atmo Launcher"
+            ReferencedContainer = "container:Atmo Launcher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E40D72051D0E0652003D6B14"
-            BuildableName = "AtmoLauncher.app"
-            BlueprintName = "AtmoLauncher"
-            ReferencedContainer = "container:AtmoLauncher.xcodeproj">
+            BuildableName = "Atmo Launcher.app"
+            BlueprintName = "Atmo Launcher"
+            ReferencedContainer = "container:Atmo Launcher.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

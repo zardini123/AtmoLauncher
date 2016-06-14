@@ -15,7 +15,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBOutlet weak var mainView: NSView!
     
-    
     @IBOutlet weak var gearView: NSImageView!
     @IBOutlet weak var gearCenter: NSImageView!
     
@@ -27,22 +26,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var rotateGear : NSTimer = NSTimer()
     
-    var moveMainView : Bool = false
-    var oldMove : Bool = false
-    
     var oldImage : NSImage!
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         oldImage = gearView.image!.copy() as! NSImage
         
+        mainView.layer?.backgroundColor = CGColorCreateGenericRGB(CGFloat(0.086), CGFloat(0.086), CGFloat(0.086), CGFloat(1.0))
+        
         rotateGear = NSTimer.scheduledTimerWithTimeInterval(1.0 / frameRate, target: self, selector: Selector("rotateGearFunction"), userInfo: nil, repeats: true)
     }
+    
     func applicationWillTerminate(aNotification: NSNotification) {
         // Insert code here to tear down your application
     }
     
     func rotateGearFunction () {
         currentAngle += (360.0 / frameRate) * (Double)(rate)
+        if (currentAngle > 360.0) {
+            currentAngle -= 360.0
+        }
         
         let queue = NSOperationQueue()
         
@@ -55,38 +57,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         downloadProgressBar.incrementBy(1.0)
-        
-        if (oldMove != moveMainView) {
-            if (moveMainView) {
-                if (moveMainViewToValue((Double)(mainView.frame.size.height) - 100.0, rate: 20.0)) {
-                    oldMove = moveMainView
-                }
-            } else {
-                if (moveMainViewToValue(20.0, rate: -20.0)) {
-                    oldMove = moveMainView
-                }
-            }
-        }
     }
     
-    @IBAction func pressedChangeLogButton(sender: NSButton) {
-        moveMainView = !moveMainView
-    }
-    
-    func moveMainViewToValue (yValue : Double, rate : Double) -> Bool {
-        if (rate >= 0) {
-            if ((Double)(-mainView.bounds.origin.y) >= yValue) {
-                return true
+    @IBAction func helpToolbar(sender: NSMenuItem) {
+        if let checkURL = NSURL(string: "http://onemoreblock.com/forum/viewtopic.php?f=24&t=3051") {
+            if NSWorkspace.sharedWorkspace().openURL(checkURL) {
+                print("url successfully opened")
             }
         } else {
-            if ((Double)(-mainView.bounds.origin.y) < yValue) {
-                return true
-            }
+            print("invalid url")
         }
-        
-        mainView.translateOriginToPoint(NSPoint(x: 0.0, y: rate))
-        
-        return false
     }
 }
 
